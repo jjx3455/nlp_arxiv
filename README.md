@@ -35,7 +35,7 @@ The list of the math labels is:
 Based on these data, one trains a basic multilabel NLP model consisting of: 
 <ul>
 <li> a text vectorizer,</li> 
-<li> for each label, one trains a Linear Support Vector Classifier.</li> 
+<li> for each label, one trains a linear support vector classifier.</li> 
 </ul>
 The parameters of the model, as well as the metrics per label, and the global metrics are logged. The data as they exist are widely imbalanced. These data are resampled to make sure the classes are balanced. No data are dropped in the process. 
 
@@ -60,6 +60,8 @@ The global metrics are:
 </li>
 </ol>
 
+
+The file "data_collections.py" was destined to collect the metadata (mathscinet classification data) from the [Arxiv bulk data access](https://arxiv.org/help/bulk_data). Beware of the terms of use of the [Arxiv API](https://arxiv.org/help/api/tou). 
 
 
 ### Metrics per class
@@ -98,9 +100,3 @@ The global metrics are:
 'math.SG': {'Accuracy': 0.99, 'Precision:': 0.69, 'Recall': 0.58, 'F1': 0.63},  
 'math.SP': {'Accuracy': 0.99, 'Precision:': 0.51, 'Recall': 0.5, 'F1': 0.5},  
 'math.ST': {'Accuracy': 0.98, 'Precision:': 0.75, 'Recall': 0.71, 'F1': 0.73}  
-
-
-
-
-
-

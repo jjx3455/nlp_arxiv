@@ -42,7 +42,7 @@ try:
             df.loc[mask_id, ["read", "msc"]] = [True, msc]
         else:
             df.loc[mask_id, ["read"]] = [True]
-        time.sleep(np.random.randint(40, size=1) / 10)
+        time.sleep(3)
 except:
     print("Something failed, probably connection closed")
     df.to_json(PATH_TO_METADATA_FOLDER + "df_maths_msc.json")

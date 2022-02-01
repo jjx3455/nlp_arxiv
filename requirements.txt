@@ -5,4 +5,4 @@ sklearn
 tqdm
 joblib
 regex
-urllib
+urllib3

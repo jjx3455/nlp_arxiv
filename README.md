@@ -55,7 +55,7 @@ The global metrics are:
 <li> Download the data, and store them under  
 "data/metatdata/arxiv-metadata-oai-snapshot.json"
 </li>
-<li> To create the metadata, run "create_metadata_py". This dumps a json "data/df_maths.json" and a csv file "data/df_maths.csv".
+<li> To create the metadata, run "create_metadata_py". This dumps a json "data/df_maths.json" and a csv file "data/df_maths.csv".</li>
 </li> To train the model, run "SVC_model.py". The model is dumped as "model/model_SVC.sav"; The metrics are logegd in "log/log_SVC.log".
 </li>
 </ol>

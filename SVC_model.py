@@ -48,7 +48,7 @@ df_maths = pd.read_json(PATH_TO_METADATA, dtype=DICT_TYPE)
 
 print("Data loaded")
 print("The shape of the data is", df_maths.shape)
-logging.info("The shape of the data is", df_maths.shape)
+logging.info(f"The shape of the data is {df_maths.shape}")
 
 # train, val test split
 X = df_maths[["abstract"]]

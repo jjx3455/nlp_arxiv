@@ -20,11 +20,11 @@ The script produces a json file based on the data. The json file contains the se
 <li> Parsed authors</li>
 <li> Title</li>
 <li> Abstract</li>
-<li> main math category (the primary math categories)</li>
-<li> all the categories of the papers (primiary and if applicable, other categories, including not mathematical categories).</li> 
+<li> main math category (the primary math category).</li>
+<li> all the categories of the papers (primary and if applicable, other categories, including non mathematical categories).</li> 
 </ul>
 
-The list of the labels is: 
+The list of the math labels is: 
 
 'math-ph' 'math.AC' 'math.AG' 'math.AP' 'math.AT' 'math.CA' 'math.CO'  
 'math.CT' 'math.CV' 'math.DG' 'math.DS' 'math.FA' 'math.GM' 'math.GN'  
@@ -43,10 +43,10 @@ The vocabulary built for the model is not pre-processed.
 
 The global metrics are:
 <ul>
-<li> The average accuracy per class is 0.9736.</li> 
-<li> The average precision per class is 0.6803.</li> 
-<li> The average recall per class is 0.5718.</li> 
-<li> The average F1 per class is 0.621.</li> 
+<li> The average accuracy per class is 0.97.</li> 
+<li> The average precision per class is 0.68.</li> 
+<li> The average recall per class is 0.57.</li> 
+<li> The average F1 per class is 0.62.</li> 
 </ul>
 
 

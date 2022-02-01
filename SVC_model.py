@@ -37,7 +37,7 @@ logging.basicConfig(
 logging.info("New training")
 
 # Loading the data
-PATH_TO_METADATA_FOLDER = "data/metatdata/"
+PATH_TO_METADATA_FOLDER = "data/metadata/"
 PATH_TO_METADATA = PATH_TO_METADATA_FOLDER + "df_maths.json"
 PATH_TO_METADATA_MSC = PATH_TO_METADATA_FOLDER + "df_maths_msc.json"
 DICT_TYPE = {"id": str}

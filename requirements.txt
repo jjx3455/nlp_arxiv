@@ -4,5 +4,5 @@ scipy
 sklearn
 tqdm
 joblib
-re
+regex
 urllib

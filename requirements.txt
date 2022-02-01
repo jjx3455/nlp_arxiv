@@ -1,8 +1,8 @@
 numpy
 pandas
 scipy
-sklearn
+scikit-learn
 tqdm
 joblib
-re
-urllib
+regex
+urllib3

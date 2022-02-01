@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 # Load the metadata
 
-PATH_TO_METADATA_FOLDER = "data/metatdata/"
+PATH_TO_METADATA_FOLDER = "data/metadata/"
 PATH_TO_METADATA = PATH_TO_METADATA_FOLDER + "df_maths.json"
 PATH_TO_METADATA_MSC = PATH_TO_METADATA_FOLDER + "df_maths_msc.json"
 DICT_TYPE = {"id": str}
@@ -51,6 +51,6 @@ try:
                 msc = m.group(1)
                 df.loc[mask_id, ["read", "msc"]] = [True, msc]
             else:
-                df.loc[mask_id, ["read"]] = [True]    
+                df.loc[mask_id, ["read"]] = [True]
 finally:
     df.to_json(PATH_TO_METADATA_FOLDER + "df_maths_msc.json")

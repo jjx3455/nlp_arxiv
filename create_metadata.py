@@ -15,7 +15,7 @@ from tqdm import tqdm
 # Avoiding the copy to slice error
 pd.options.mode.chained_assignment = None
 
-PATH_TO_FOLDER = "data/metatdata/"
+PATH_TO_FOLDER = "data/metadata/"
 PATH_TO_METADATA = "data/metatdata/arxiv-metadata-oai-snapshot.json"
 
 # Date from which the data will be considered.

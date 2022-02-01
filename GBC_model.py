@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.svm import LinearSVC
+from sklearn.ensemble import GradientBoostingClassifier as GBC
 from sklearn.model_selection import GridSearchCV
 from sklearn.utils import resample
 from sklearn.metrics import multilabel_confusion_matrix
@@ -109,30 +109,24 @@ logging.info(f"Label list: {mlb.classes_}")
 # by one and one classifier only, it is possible to gain knowledge about the class by inspecting its
 # corresponding classifier. This is the most commonly used strategy for multiclass classification and
 # is a fair default choice.
-# LinearSVC : Linear Support Vector Classification.
+# GBC : Gradient Boosting for classification..
 classifier = Pipeline(
     [
         ("vectorizer", CountVectorizer()),
         ("tfidf", TfidfTransformer()),
-        ("clf", OneVsRestClassifier(LinearSVC())),
+        ("clf", OneVsRestClassifier(GBC())),
     ]
 )
 
 # pipeline parameters prepared for a grid search
 pipe_parameters = [
     {
-        "vectorizer__max_features": [1500, 2000, 3000, 5000, 10000, 25000, 50000],
-        "clf__estimator__C": [
-            1,
-        ],
-    },
-    {
-        "vectorizer__max_features": [
-            None,
-        ],
-        "clf__estimator__C": [0.1, 1, 5, 10],
+        "vectorizer__max_features": [None, 1500, 2000, 3000, 5000, 10000, 25000, 50000],
+        "clf__estimator__max_depth": [1, 10, 25, 50, 100],
+        "clf__estimator__n_estimators": [100, 250, 500, 1000],
     },
 ]
+
 logging.info(f"Pipe parameters: {pipe_parameters}")
 
 

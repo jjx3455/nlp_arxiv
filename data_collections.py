@@ -51,6 +51,6 @@ try:
                 msc = m.group(1)
                 df.loc[mask_id, ["read", "msc"]] = [True, msc]
             else:
-                df.loc[mask_id, ["read"]] = [True]    
+                df.loc[mask_id, ["read"]] = [True]
 finally:
     df.to_json(PATH_TO_METADATA_FOLDER + "df_maths_msc.json")

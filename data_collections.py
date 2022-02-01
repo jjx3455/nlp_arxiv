@@ -6,6 +6,7 @@ THIS SCRIPT IS NOT USEFUL. IT IS NOT POSSIBLE TO HARVEST THE MSC FROM THE ARXIV 
 """
 import os
 import urllib, urllib.request
+from urllib.error import HTTPError
 import re
 import pandas as pd
 import numpy as np
@@ -28,21 +29,28 @@ else:
 # Check the read ids./
 mask_to_read = df["read"] == False
 df_to_read = df.loc[mask_to_read, :]
-
+counter = 0
 # Harvesting
 try:
     for id in tqdm(df_to_read["id"]):
+        counter += 1
         mask_id = df["id"] == id
         url = "http://export.arxiv.org/abs/" + f"{id}"
-        webdata = urllib.request.urlopen(url)
-        page = webdata.read().decode("utf-8")
-        m = re.search("""<td class="tablecell msc-classes">(.+?)</td>""", page)
-        if m != None:
-            msc = m.group(1)
-            df.loc[mask_id, ["read", "msc"]] = [True, msc]
+        try:
+            if counter % 4 == 0:
+                time.sleep(1)
+            webdata = urllib.request.urlopen(url)
+            page = webdata.read().decode("utf-8")
+        except HTTPError:
+            print("connection error, making a break")
+            time.sleep(60)
+            print("trying again")
         else:
-            df.loc[mask_id, ["read"]] = [True]
-        time.sleep(3)
-except:
-    print("Something failed, probably connection closed")
+            m = re.search("""<td class="tablecell msc-classes">(.+?)</td>""", page)
+            if m != None:
+                msc = m.group(1)
+                df.loc[mask_id, ["read", "msc"]] = [True, msc]
+            else:
+                df.loc[mask_id, ["read"]] = [True]    
+finally:
     df.to_json(PATH_TO_METADATA_FOLDER + "df_maths_msc.json")

@@ -16,8 +16,6 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.utils import resample
 from sklearn.metrics import multilabel_confusion_matrix
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 # Starting the looging

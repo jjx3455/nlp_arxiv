@@ -55,7 +55,16 @@ def cleaning_df(df: pd.DataFrame, year: int = 16) -> pd.DataFrame:
     mask = mask_date & mask_math
     df_maths = df_copy.loc[mask, :]
     transformed_categories = [string.split(" ") for string in df_maths["categories"]]
+    math_categories = []
+    for list_categories in transformed_categories:
+        list_math_categories = [
+            string for string in list_categories if "math" in string
+        ]
+        math_categories.append(list_math_categories)
+    main_math_categories = [list_string[0] for list_string in math_categories]
     df_maths["categories"] = transformed_categories
+    df_maths["math_categories"] = math_categories
+    df_maths["main_math_categories"] = main_math_categories
     return df_maths
 
 
@@ -77,7 +86,7 @@ df_maths["read"] = False
 df_maths["msc"] = np.nan
 
 
-#Adding one-hot encoded categories.
+# Adding one-hot encoded categories.
 list_math_categories = []
 list_other_categories = []
 list_categories = df_maths["categories"]
@@ -89,20 +98,21 @@ for categories in list_categories:
             list_other_categories.append(string)
 
 
-
-#Creating the list of all labels. 
+# Creating the list of all labels.
 list_math_categories = list(set(list_math_categories))
 list_other_categories = list(set(list_other_categories))
 list_all = list_math_categories + list_other_categories
 
 
-#One hot encoding the categories
-df_int = pd.DataFrame(columns = list_all)
+# One hot encoding the categories
+df_int = pd.DataFrame(columns=list_all)
 for category in list_all:
-    df_int[f"{category}"] = df_maths["categories"].apply(lambda x: category in x).astype(int)
+    df_int[f"{category}"] = (
+        df_maths["categories"].apply(lambda x: category in x).astype(int)
+    )
 
 
-df_maths = pd.concat([df_maths, df_int], axis = 1)
+df_maths = pd.concat([df_maths, df_int], axis=1)
 
 df_maths.to_json(PATH_TO_FOLDER + "df_maths.json")
 

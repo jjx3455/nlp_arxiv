@@ -86,8 +86,8 @@ print("Data resampled")
 
 
 # Selecting upsampled data
-X_train = df_upsampled["abstract"]
-y_train_text_multi = df_upsampled["math_categories"]
+X_train = df_upsampled["abstract"].iloc[:50000]
+y_train_text_multi = df_upsampled["math_categories"].iloc[:50000]
 
 logging.info(f"Train size: {X_train.shape}")
 
@@ -110,20 +110,32 @@ logging.info(f"Label list: {mlb.classes_}")
 # corresponding classifier. This is the most commonly used strategy for multiclass classification and
 # is a fair default choice.
 # GBC : Gradient Boosting for classification..
+
+EARLY_STOPPING_ITER = 10
+
 classifier = Pipeline(
     [
         ("vectorizer", CountVectorizer()),
         ("tfidf", TfidfTransformer()),
-        ("clf", OneVsRestClassifier(GBC())),
+        (
+            "clf",
+            OneVsRestClassifier(
+                GBC(
+                    verbose=True,
+                    n_iter_no_change=EARLY_STOPPING_ITER,
+                )
+            ),
+        ),
     ]
 )
 
 # pipeline parameters prepared for a grid search
 pipe_parameters = [
     {
-        "vectorizer__max_features": [None, 1500, 2000, 3000, 5000, 10000, 25000, 50000],
-        "clf__estimator__max_depth": [1, 10, 25, 50, 100],
-        "clf__estimator__n_estimators": [100, 250, 500, 1000],
+        "vectorizer__max_features": [50000],
+        "clf__estimator__max_depth": [2,4,8,16,32],
+        "clf__estimator__n_estimators": [100, 250, 500],
+        "clf__estimator__learning_rate" [0.01, 0.05, 0.1, 0,5]
     },
 ]
 

@@ -135,7 +135,7 @@ pipe_parameters = [
         "vectorizer__max_features": [50000],
         "clf__estimator__max_depth": [2,4,8,16,32],
         "clf__estimator__n_estimators": [100, 250, 500],
-        "clf__estimator__learning_rate" [0.01, 0.05, 0.1, 0,5]
+        "clf__estimator__learning_rate": [0.01, 0.05, 0.1, 0,5]
     },
 ]
 

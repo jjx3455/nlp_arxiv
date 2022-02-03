@@ -6,3 +6,4 @@ tqdm
 joblib
 regex
 urllib3
+xgboost

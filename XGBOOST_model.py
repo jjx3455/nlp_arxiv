@@ -12,7 +12,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.ensemble import GradientBoostingClassifier as GBC
+import xgboost
 from sklearn.model_selection import GridSearchCV
 from sklearn.utils import resample
 from sklearn.metrics import multilabel_confusion_matrix
@@ -34,7 +34,9 @@ logging.basicConfig(
 )
 
 
-logging.info("New training")
+logging.info("New training with XGBOOST")
+logging.info("Remark: Trial run.")
+
 
 # Loading the data
 PATH_TO_METADATA_FOLDER = "data/metadata/"
@@ -86,8 +88,8 @@ print("Data resampled")
 
 
 # Selecting upsampled data
-X_train = df_upsampled["abstract"].iloc[:50000]
-y_train_text_multi = df_upsampled["math_categories"].iloc[:50000]
+X_train = df_upsampled["abstract"]
+y_train_text_multi = df_upsampled["math_categories"]
 
 logging.info(f"Train size: {X_train.shape}")
 
@@ -119,12 +121,7 @@ classifier = Pipeline(
         ("tfidf", TfidfTransformer()),
         (
             "clf",
-            OneVsRestClassifier(
-                GBC(
-                    verbose=True,
-                    n_iter_no_change=EARLY_STOPPING_ITER,
-                )
-            ),
+            OneVsRestClassifier(xgboost.XGBClassifier()),
         ),
     ]
 )
@@ -132,10 +129,14 @@ classifier = Pipeline(
 # pipeline parameters prepared for a grid search
 pipe_parameters = [
     {
-        "vectorizer__max_features": [50000],
-        "clf__estimator__max_depth": [2,4,8,16,32],
-        "clf__estimator__n_estimators": [100, 250, 500],
-        "clf__estimator__learning_rate": [0.01, 0.05, 0.1, 0,5]
+        "vectorizer__max_df": [0, 0.01, 0.05, 0.1],
+        "vectorizer__max_features": [None, 10000, 25000, 50000],
+        "vectorizer__strip_accents": ["unicode"],
+        "clf__estimator__use_label_encoder": [True],
+        "clf__estimator__learning_rate": [0.01, 0.1, 0.5, 1],
+        "clf__estimator__max_depth": [3, 5, 7, 9],
+        "clf__estimator__verbosity": [2],
+        "verbose": [2],
     },
 ]
 
@@ -143,21 +144,21 @@ logging.info(f"Pipe parameters: {pipe_parameters}")
 
 
 # Gridsearch definition
-grid = GridSearchCV(classifier, pipe_parameters, cv=2)
+grid = GridSearchCV(classifier, pipe_parameters)
 
 grid.fit(X_train, y_train)
 
-print("The best parameters are", grid.best_params_)
+# print("The best parameters are", grid.best_params_)
 logging.info(f"The best parameters are {grid.best_params_}")
 
 
 PATH_TO_MODEL_FOLDER = "model/"
-PATH_TO_MODEL = PATH_TO_MODEL_FOLDER + "model_SVC.sav"
+PATH_TO_MODEL = PATH_TO_MODEL_FOLDER + "model_XGBOOST.sav"
 
 if not os.path.exists(PATH_TO_MODEL_FOLDER):
     os.mkdir(PATH_TO_MODEL_FOLDER)
 
-joblib.dump(grid, PATH_TO_MODEL)
+joblib.dump(classifier, PATH_TO_MODEL)
 
 print("Model saved")
 

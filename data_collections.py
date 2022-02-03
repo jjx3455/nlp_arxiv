@@ -30,6 +30,7 @@ else:
 mask_to_read = df["read"] == False
 df_to_read = df.loc[mask_to_read, :]
 counter = 0
+counter_break = 0
 # Harvesting
 try:
     for id in tqdm(df_to_read["id"]):
@@ -42,10 +43,12 @@ try:
             webdata = urllib.request.urlopen(url)
             page = webdata.read().decode("utf-8")
         except HTTPError:
-            print("connection error, making a break")
-            time.sleep(60)
+            counter_break += 1
+            print(f"connection error, making a break of {counter_break * 30}s")
+            time.sleep(counter_break * 30)
             print("trying again")
         else:
+            counter_break = 0
             m = re.search("""<td class="tablecell msc-classes">(.+?)</td>""", page)
             if m != None:
                 msc = m.group(1)
